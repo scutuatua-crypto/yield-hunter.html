@@ -1,1 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeFi Yield Hunter 🌾 - Find Best Passive Income</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            color: #a0aec0;
+        }
+        
+        .capital-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 12px;
+        }
+        
+        .capital-input input {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            width: 120px;
+            outline: none;
+        }
+        
+        .capital-input input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: #48bb78;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+        }
+        
+        .opportunities-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .opportunity-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        
+        .opportunity-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .opp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .opp-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .protocol-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .opp-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .opp-chain {
+            font-size: 14px;
+            color: #a0aec0;
+        }
+        
+        .apy-badge {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .opp-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 10px;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: #a0aec0;
+            margin-bottom: 4px;
+        }
+        
+        .detail-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .earnings-calc {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .earnings-text {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 8px;
+        }
+        
+        .earnings-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: #48bb78;
+        }
+        
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .risk-low { background: rgba(72, 187, 120, 0.2); color: #48bb78; }
+        .risk-medium { background: rgba(237, 137, 54, 0.2); color: #ed8936; }
+        .risk-high { background: rgba(245, 101, 101, 0.2); color: #f56565; }
+        
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 18px;
+            color: #a0aec0;
+        }
+        
+        @media (max-width: 768px) {
+            .opp-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🌾</div>
+                <div class="logo-text">
+                    <h1>DeFi Yield Hunter</h1>
+                    <p>Find the Best Passive Income</p>
+                </div>
+            </div>
+            <div class="capital-input">
+                <span>Your Capital: $</span>
+                <input type="number" id="capitalInput" placeholder="500" value="500">
+            </div>
+        </div>
+    </div>
 
+    <div class="main-content">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Best APY Found</div>
+                <div class="stat-value" id="bestApy">Loading...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Opportunities</div>
+                <div class="stat-value" id="oppCount">-</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Potential Monthly Earnings</div>
+                <div class="stat-value" id="monthlyEarnings">$0</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Chains</button>
+            <button class="filter-btn" data-filter="polygon">Polygon</button>
+            <button class="filter-btn" data-filter="bsc">BSC</button>
+            <button class="filter-btn" data-filter="arbitrum">Arbitrum</button>
+            <button class="filter-btn" data-filter="stables">Stablecoins Only</button>
+        </div>
+
+        <div class="opportunities-grid" id="opportunitiesGrid">
+            <div class="loading">🔍 Finding best yield opportunities for you...</div>
+        </div>
+    </div>
+
+    <script>
+        // Sample yield opportunities (in production, fetch from DeFiLlama API)
+        const yieldOpportunities = [
+            {
+                protocol: "Aave V3",
+                icon: "💎",
+                chain: "Polygon",
+                asset: "USDC",
+                apy: 8.5,
+                tvl: "$450M",
+                risk: "low",
+                type: "stablecoin",
+                url: "https://app.aave.com"
+            },
+            {
+                protocol: "Compound",
+                icon: "🏦",
+                chain: "Polygon",
+                asset: "USDT",
+                apy: 7.2,
+                tvl: "$320M",
+                risk: "low",
+                type: "stablecoin",
+                url: "https://app.compound.finance"
+            },
+            {
+                protocol: "Curve Finance",
+                icon: "📈",
+                chain: "Polygon",
+                asset: "3pool (DAI/USDC/USDT)",
+                apy: 9.8,
+                tvl: "$890M",
+                risk: "low",
+                type: "stablecoin",
+                url: "https://curve.fi"
+            },
+            {
+                protocol: "PancakeSwap",
+                icon: "🥞",
+                chain: "BSC",
+                asset: "BUSD",
+                apy: 12.4,
+                tvl: "$280M",
+                risk: "medium",
+                type: "stablecoin",
+                url: "https://pancakeswap.finance"
+            },
+            {
+                protocol: "Venus Protocol",
+                icon: "⚡",
+                chain: "BSC",
+                asset: "USDT",
+                apy: 10.5,
+                tvl: "$190M",
+                risk: "medium",
+                type: "stablecoin",
+                url: "https://app.venus.io"
+            },
+            {
+                protocol: "Stargate Finance",
+                icon: "🌉",
+                chain: "Arbitrum",
+                asset: "USDC",
+                apy: 8.9,
+                tvl: "$420M",
+                risk: "low",
+                type: "stablecoin",
+                url: "https://stargate.finance"
+            },
+            {
+                protocol: "Beefy Finance",
+                icon: "🐮",
+                chain: "Polygon",
+                asset: "WETH",
+                apy: 15.2,
+                tvl: "$125M",
+                risk: "medium",
+                type: "crypto",
+                url: "https://app.beefy.finance"
+            },
+            {
+                protocol: "Yearn Finance",
+                icon: "🔷",
+                chain: "Arbitrum",
+                asset: "ETH",
+                apy: 14.8,
+                tvl: "$340M",
+                risk: "medium",
+                type: "crypto",
+                url: "https://yearn.finance"
+            }
+        ];
+
+        let currentCapital = 500;
+        let currentFilter = 'all';
+
+        const capitalInput = document.getElementById('capitalInput');
+        const opportunitiesGrid = document.getElementById('opportunitiesGrid');
+        const bestApyEl = document.getElementById('bestApy');
+        const oppCountEl = document.getElementById('oppCount');
+        const monthlyEarningsEl = document.getElementById('monthlyEarnings');
+
+        function calculateEarnings(apy, capital, months = 1) {
+            return (capital * (apy / 100) * (months / 12)).toFixed(2);
+        }
+
+        function renderOpportunities() {
+            let filtered = yieldOpportunities;
+            
+            if (currentFilter === 'stables') {
+                filtered = yieldOpportunities.filter(opp => opp.type === 'stablecoin');
+            } else if (currentFilter !== 'all') {
+                filtered = yieldOpportunities.filter(opp => 
+                    opp.chain.toLowerCase() === currentFilter
+                );
+            }
+
+            // Sort by APY
+            filtered.sort((a, b) => b.apy - a.apy);
+
+            const bestApy = filtered.length > 0 ? filtered[0].apy : 0;
+            const bestMonthly = calculateEarnings(bestApy, currentCapital, 1);
+
+            bestApyEl.textContent = bestApy + '%';
+            oppCountEl.textContent = filtered.length;
+            monthlyEarningsEl.textContent = '$' + bestMonthly;
+
+            opportunitiesGrid.innerHTML = filtered.map(opp => {
+                const monthlyEarning = calculateEarnings(opp.apy, currentCapital, 1);
+                const yearlyEarning = calculateEarnings(opp.apy, currentCapital, 12);
+
+                return `
+                    <div class="opportunity-card">
+                        <div class="opp-header">
+                            <div class="opp-title">
+                                <div class="protocol-icon">${opp.icon}</div>
+                                <div class="opp-info">
+                                    <h3>
+                                        ${opp.protocol}
+                                        <span class="risk-badge risk-${opp.risk}">${opp.risk.toUpperCase()}</span>
+                                    </h3>
+                                    <div class="opp-chain">${opp.chain} • ${opp.asset}</div>
+                                </div>
+                            </div>
+                            <div class="apy-badge">${opp.apy}% APY</div>
+                        </div>
+                        
+                        <div class="opp-details">
+                            <div class="detail-item">
+                                <div class="detail-label">TVL</div>
+                                <div class="detail-value">${opp.tvl}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Chain</div>
+                                <div class="detail-value">${opp.chain}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Asset Type</div>
+                                <div class="detail-value">${opp.type === 'stablecoin' ? '💵 Stable' : '💎 Crypto'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="earnings-calc">
+                            <div class="earnings-text">With $${currentCapital} you can earn:</div>
+                            <div class="earnings-amount">$${monthlyEarning}/month • $${yearlyEarning}/year</div>
+                        </div>
+                        
+                        <button class="action-btn" onclick="window.open('${opp.url}', '_blank')">
+                            Start Earning 🚀
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        capitalInput.addEventListener('input', (e) => {
+            currentCapital = parseFloat(e.target.value) || 0;
+            renderOpportunities();
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderOpportunities();
+            });
+        });
+
+        // Initial render
+        renderOpportunities();
+    </script>
+</body>
+</html>
