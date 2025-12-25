@@ -5,7 +5,7 @@
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Live 
 🌐 **Explore the Reef:** [https://scutuatua-crypto.github.io/whaletrucker-reef/](https://scutuatua-crypto.github.io/whaletrucker-reef/)
 
 ---
